@@ -1,7 +1,8 @@
 #pragma once
 #ifndef HUFFMAN
+#include <cstdio>
 
-const int Max = 100003;//一行中可能的最大字符数
+const int Max = 1000003;//一行中可能的最大字符数
 const int maxn = 56;//字符集字符个数
 const int buffer_size = 4096;//定义缓冲区大小
 
@@ -38,4 +39,7 @@ void decode(const TreeNode arr[]);//将密文转为明文
 char Bin2Char(const bool *arr);//将8位bool值转换为一个char
 void Char2Bin(char ch, bool* arr);//将一个char转换为8位的数组
 char GetPosChar(const int&pos);//获取某个位置上的字符
+void CreateVisual(const TreeNode arr[]);
+void tree_create_dot(const TreeNode arr[],int pos,FILE* stream);
+
 #endif // !HUFFMAN

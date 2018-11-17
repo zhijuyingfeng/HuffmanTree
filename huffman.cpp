@@ -6,7 +6,6 @@
 #include <cstring>
 #include <vector>
 #include <queue>
-#include <cstdio>
 #include <cstdlib>
 #include "huffman.h"
 using namespace std;
@@ -114,12 +113,12 @@ void GenerateClearText()//生成明文
 {
 
     FILE* file = fopen("/home/nigao/Documents/HuffmanTree/cleartext.txt", "w");
-    char str[1001] = { 0 };
+    char str[101] = { 0 };
     int r;
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 5; i++)
     {
         memset(str, 0, sizeof(str));
-        for (int j = 0; j < 1000; j++)//随机生成明文
+        for (int j = 0; j < 100; j++)//随机生成明文
         {
             r = rand() % maxn;
             str[j] = charset[r];
@@ -451,5 +450,45 @@ char GetPosChar(const int&pos)
             {
                 return pos - 30 + 'a';
             }
+    }
+}
+
+void CreateVisual(const TreeNode arr[])
+{
+    FILE* stream=fopen("/home/nigao/Documents/HuffmanTree/tree.dot","w");
+    fprintf(stream,"digraph {\n");
+    fprintf(stream,"  node[width=0.5,height=0.5];\n");
+    fprintf(stream,"  edge[color=blue, arrowhead=normal];\n");
+    fprintf(stream,"  nodesep=0.5;\n\n");
+
+    for(int i=0;i<((maxn<<1)-1);i++)
+    {
+        fprintf(stream,"%d[label=%d]",i,arr[i].weight);
+    }
+
+    tree_create_dot(arr, ((maxn-1)<<1), stream);
+
+    fprintf(stream,"}\n");
+    fclose(stream);
+
+    system("dot -Tsvg /home/nigao/Documents/HuffmanTree/tree.dot "
+           "-o /home/nigao/Documents/HuffmanTree/tree.svg");
+    system("display /home/nigao/Documents/HuffmanTree/tree.svg");
+}
+
+void tree_create_dot(const TreeNode arr[],int pos,FILE* stream)
+{
+    int child;
+    if(arr[pos].LeftChild>=0)
+    {
+        child=arr[pos].LeftChild;
+        fprintf(stream,"%d -> %d;\n",pos,child);
+        tree_create_dot(arr,child,stream);
+    }
+    if(arr[pos].RightChild>=0)
+    {
+        child=arr[pos].RightChild;
+        fprintf(stream,"%d -> %d;\n",pos,child);
+        tree_create_dot(arr,child,stream);
     }
 }

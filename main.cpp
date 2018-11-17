@@ -27,5 +27,7 @@ int main()
     GenerateHuffmanTree(arr);
     GenerateCipherText(arr);
     decode(arr);
+    CreateVisual(arr);
+
     return 0;
 }
