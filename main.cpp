@@ -14,7 +14,7 @@ int main()
 {
     SetCharset();
 
-    GenerateClearText();
+    //GenerateClearText();
 
     encode();
 
@@ -28,6 +28,7 @@ int main()
     GenerateCipherText(arr);
     decode(arr);
     CreateVisual(arr);
-
+    ShowHuffmanCoding(arr);
+    ComputeRate();
     return 0;
 }

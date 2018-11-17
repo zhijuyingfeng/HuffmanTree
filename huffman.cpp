@@ -111,14 +111,14 @@ void GenerateHuffmanTree(TreeNode arr[])
 
 void GenerateClearText()//生成明文
 {
-
+    const int str_len=1000;
     FILE* file = fopen("/home/nigao/Documents/HuffmanTree/cleartext.txt", "w");
-    char str[101] = { 0 };
+    char str[str_len+1] = { 0 };
     int r;
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 1000; i++)
     {
         memset(str, 0, sizeof(str));
-        for (int j = 0; j < 100; j++)//随机生成明文
+        for (int j = 0; j < str_len; j++)//随机生成明文
         {
             r = rand() % maxn;
             str[j] = charset[r];
@@ -135,7 +135,8 @@ void encode()
     int len;
     while (!feof(file))//没有到达文件尾
     {
-        fgets(str, Max, file);//从文件中读一行到缓冲区
+        //fgets(str, Max, file);//从文件中读一行到缓冲区
+        fscanf(file,"%[a-zA-Z\n,. ]",str);
         len = strlen(str);
         TotalCharNum += len;
         for (int i = 0; i < len; i++)//计算字符集中各字符个数
@@ -400,7 +401,6 @@ void decode(const TreeNode *arr)
         if (DecodedCharNum >= TotalCharNum)
             break;
     }
-
     //for (int i = 0; i < DecodedCharNum; i++)
     //{
     //	fprintf(cleartext2, "%c", char_buffer[i]);
@@ -455,6 +455,7 @@ char GetPosChar(const int&pos)
 
 void CreateVisual(const TreeNode arr[])
 {
+    //create tree.dot file
     FILE* stream=fopen("/home/nigao/Documents/HuffmanTree/tree.dot","w");
     fprintf(stream,"digraph {\n");
     fprintf(stream,"  node[width=0.5,height=0.5];\n");
@@ -463,7 +464,7 @@ void CreateVisual(const TreeNode arr[])
 
     for(int i=0;i<((maxn<<1)-1);i++)
     {
-        fprintf(stream,"%d[label=%d]",i,arr[i].weight);
+        fprintf(stream,"%d[label=%d]",i,arr[i].weight);//create nodes
     }
 
     tree_create_dot(arr, ((maxn-1)<<1), stream);
@@ -471,9 +472,11 @@ void CreateVisual(const TreeNode arr[])
     fprintf(stream,"}\n");
     fclose(stream);
 
+
+    //invoke external command line to transfer tree.dot to tree.svg
     system("dot -Tsvg /home/nigao/Documents/HuffmanTree/tree.dot "
            "-o /home/nigao/Documents/HuffmanTree/tree.svg");
-    system("display /home/nigao/Documents/HuffmanTree/tree.svg");
+    system("eog /home/nigao/Documents/HuffmanTree/tree.svg");
 }
 
 void tree_create_dot(const TreeNode arr[],int pos,FILE* stream)
@@ -482,13 +485,26 @@ void tree_create_dot(const TreeNode arr[],int pos,FILE* stream)
     if(arr[pos].LeftChild>=0)
     {
         child=arr[pos].LeftChild;
-        fprintf(stream,"%d -> %d;\n",pos,child);
-        tree_create_dot(arr,child,stream);
+        fprintf(stream,"%d -> %d;\n",pos,child);//draw edge
+        tree_create_dot(arr,child,stream);//recur to draw left subtree
     }
     if(arr[pos].RightChild>=0)
     {
         child=arr[pos].RightChild;
-        fprintf(stream,"%d -> %d;\n",pos,child);
-        tree_create_dot(arr,child,stream);
+        fprintf(stream,"%d -> %d;\n",pos,child);//draw edge
+        tree_create_dot(arr,child,stream);//recur to draw left subtree
+    }
+}
+
+void ComputeRate()
+{
+    cout<<"Compressed rate:\t"<<100.0*CipherCharNum/TotalCharNum<<"%"<<endl;
+}
+
+void ShowHuffmanCoding(TreeNode arr[])
+{
+    for(int i=0;i<maxn;i++)
+    {
+        cout<<GetPosChar(i)<<":\t"<<arr[i].path<<endl;
     }
 }
