@@ -14,7 +14,7 @@ int main()
 {
     SetCharset();
 
-    //GenerateClearText();
+//    GenerateClearText();
 
     encode();
 
@@ -30,5 +30,6 @@ int main()
     CreateVisual(arr);
     ShowHuffmanCoding(arr);
     ComputeRate();
+    Compare();
     return 0;
 }

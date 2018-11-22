@@ -115,7 +115,7 @@ void GenerateClearText()//生成明文
     FILE* file = fopen("/home/nigao/Documents/HuffmanTree/cleartext.txt", "w");
     char str[str_len+1] = { 0 };
     int r;
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < 100; i++)
     {
         memset(str, 0, sizeof(str));
         for (int j = 0; j < str_len; j++)//随机生成明文
@@ -401,10 +401,10 @@ void decode(const TreeNode *arr)
         if (DecodedCharNum >= TotalCharNum)
             break;
     }
-    //for (int i = 0; i < DecodedCharNum; i++)
-    //{
-    //	fprintf(cleartext2, "%c", char_buffer[i]);
-    //}
+//    for (int i = 0; i < DecodedCharNum; i++)
+//    {
+//    	fprintf(cleartext2, "%c", char_buffer[i]);
+//    }
 
     fputs(char_buffer, cleartext2);
     fclose(cipertext2);
@@ -507,4 +507,23 @@ void ShowHuffmanCoding(TreeNode arr[])
     {
         cout<<GetPosChar(i)<<":\t"<<arr[i].path<<endl;
     }
+}
+
+void Compare()
+{
+    FILE* cleartext = fopen("/home/nigao/Documents/HuffmanTree/cleartext.txt", "r");//密文文件
+    FILE* cleartext2 = fopen("/home/nigao/Documents/HuffmanTree/cleartext2.txt", "r");//由密文解密得到的文件
+
+    char str1[Max]={0};
+    char str2[Max]={0};
+    fscanf(cleartext,"%[a-zA-Z,. \n]",str1);
+    fscanf(cleartext2,"%[a-zA-Z,. \n]",str2);
+    int res=strcmp(str1,str2);
+    if(!res)
+        cout<<"There is no difference between original text and decoded text."<<endl;
+    else
+        cout<<"There are some difference between original text and decoded text."<<endl;
+
+    fclose(cleartext);
+    fclose(cleartext2);
 }

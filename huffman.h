@@ -43,5 +43,6 @@ void CreateVisual(const TreeNode arr[]);//Create visual tree
 void tree_create_dot(const TreeNode arr[],int pos,FILE* stream);//draw tree nodes recursively
 void ComputeRate();//Compute the compressed rate
 void ShowHuffmanCoding(TreeNode arr[]);
+void Compare();//Compare original text and decode text
 
 #endif // !HUFFMAN
